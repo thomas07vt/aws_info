@@ -2,9 +2,8 @@ require 'spec_helper'
 
 describe AwsInfo do
   before do
-    raw_response = "{\n  \"accountId\" : \"09090909090\",\n  \"instanceId\" : \"i-00009990\",\n  \"billingProducts\" : null,\n  \"instanceType\" : \"t2.micro\",\n  \"pendingTime\" : \"2015-09-04T19:03:47Z\",\n  \"imageId\" : \"ami-c8888888\",\n  \"kernelId\" : null,\n  \"ramdiskId\" : null,\n  \"architecture\" : \"x86_64\",\n  \"region\" : \"us-east-1\",\n  \"version\" : \"2015-10-31\",\n  \"privateIp\" : \"10.10.10.10\",\n  \"availabilityZone\" : \"us-east-1b\",\n  \"devpayProductCodes\" : null\n}"
-
-    AwsInfo.stub(:query_instance_identity).and_return(raw_response)
+    raw_response = DataHelper.meta_data
+    AwsInfo.stub(:query_instance_identity).and_return(DataHelper.meta_data)
   end
 
   it 'has a version number' do
@@ -104,6 +103,27 @@ describe AwsInfo do
   context '.architecture' do
     it 'returns the architecture' do
       expect(AwsInfo.architecture).to eq('x86_64')
+    end
+  end
+
+  context '.tags' do
+    before do
+      AwsInfo.stub(:query_tag_data).and_return(DataHelper.describe_tags)
+    end
+
+    it 'returns a hash of tags' do
+      expect(AwsInfo.tags.class).to eq(Hash)
+    end
+
+    it 'returns all key values pairs for each EC2 tag' do
+      expect(AwsInfo.tags['firsttag']).to eq('first')
+      expect(AwsInfo.tags['tag2']).to eq('second')
+    end
+
+    it 'memoizes @@tags' do
+      AwsInfo.tags # Set info if it hasn't been
+      expect(AwsInfo).to receive(:load_meta_data).exactly(0).times
+      2.times { AwsInfo.tags }
     end
   end
 

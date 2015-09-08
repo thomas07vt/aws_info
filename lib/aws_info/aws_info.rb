@@ -5,8 +5,12 @@ module AwsInfo
 
   class << self
 
+    def tags
+      @@tags ||= load_tag_data
+    end
+
     def info
-      @@info ||= load_info
+      @@info ||= load_meta_data
     end
 
     def region
@@ -69,7 +73,19 @@ module AwsInfo
 
     private
 
-    def load_info
+    def load_tag_data
+      tag_array = JSON.parse(query_tag_data)["Tags"]
+      tag_array.inject({}) { |tags, e| tags[e["Key"]] = e["Value"]; tags }
+    end
+
+    def query_tag_data
+      # You must have permissions to run aws ec2 describe-tags
+      # Is there a better way to get this without relying on sysyem calls?
+      # Aws sdk provides this, but do I want to rely on the aws-adk?
+      `aws ec2 describe-tags --region us-east-1 --filter "Name=resource-id,Values=#{instance_id}"`
+    end
+
+    def load_meta_data
       JSON.parse(query_instance_identity)
     end
 
