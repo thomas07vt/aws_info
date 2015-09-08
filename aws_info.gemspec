@@ -10,8 +10,9 @@ Gem::Specification.new do |spec|
   spec.email         = ["thomas07@vt.edu"]
 
   spec.summary       = %q{A simple gem to get AWS server info.}
-  spec.description   = %q{A gem to provide an easy way to access the AWS metadata
-from a specific server.}
+  spec.description   = %q{A gem to provide an easy way to load the AWS
+  information from a given AWS instance. Automatically detect server IP,
+  Region, Availability Zone, etc. as well as instance tags}
   spec.homepage      = "https://github.com/thomas07vt/aws_info"
   spec.license       = "MIT"
 
