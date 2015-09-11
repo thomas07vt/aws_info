@@ -1,8 +1,7 @@
 # AwsInfo
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/aws_info`. To experiment with that code, run `bin/console` for an interactive prompt.
+A gem to provide an easy way to load the AWS information from a given AWS instance. Automatically detect server IP, Region, Availability Zone, etc. as well as instance tags.
 
-TODO: Delete this and the text above, and describe your gem
 
 ## Installation
 
@@ -22,7 +21,46 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+require 'aws_info'
+
+AwsInfo.
+#=>
+
+AwsInfo.
+#=>
+
+AwsInfo.
+#=>
+
+AwsInfo.
+#=>
+
+AwsInfo.
+#=>
+
+AwsInfo.
+#=>
+
+AwsInfo.
+#=>
+
+AwsInfo.
+#=>
+
+AwsInfo.
+#=>
+
+AwsInfo.
+#=>
+
+AwsInfo.
+#=>
+
+AwsInfo.
+#=>
+
+```
 
 ## Development
 
