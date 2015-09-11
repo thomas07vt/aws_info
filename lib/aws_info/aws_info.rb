@@ -1,5 +1,6 @@
 require 'net/http'
 require 'json'
+require 'timeout'
 
 module AwsInfo
 
@@ -74,7 +75,7 @@ module AwsInfo
     private
 
     def load_tag_data
-      tag_array = JSON.parse(query_tag_data)["Tags"]
+      tag_array = JSON.parse(query_tag_data)["Tags"] rescue []
       tag_array.inject({}) { |tags, e| tags[e["Key"]] = e["Value"]; tags }
     end
 
@@ -90,7 +91,10 @@ module AwsInfo
     end
 
     def query_instance_identity
-      Net::HTTP.get(URI.parse('http://169.254.169.254/latest/dynamic/instance-identity/document'))
+      Timeout::timeout(5) {
+        url = 'http://169.254.169.254/latest/dynamic/instance-identity/document'
+        Net::HTTP.get(URI.parse(url))
+      }
     end
 
   end # End class methods
