@@ -2,6 +2,11 @@
 
 A gem to provide an easy way to load the AWS information from a given AWS instance. Automatically detect server IP, Region, Availability Zone, etc. as well as instance tags.
 
+Under the hood this gem uses the aws meta data lookup url for instance information:
+http://169.254.169.254/latest/dynamic/instance-identity/document
+
+And it uses aws describe tags command on the aws server to get a list of tags: "aws ec2 describe-tags ..."
+
 
 ## Installation
 
@@ -24,53 +29,62 @@ Or install it yourself as:
 ```ruby
 require 'aws_info'
 
-AwsInfo.
-#=>
+AwsInfo.region
+#=> "us-east-1"
 
-AwsInfo.
-#=>
+AwsInfo.ip
+#=> "10.10.10.10"
 
-AwsInfo.
-#=>
+AwsInfo.availability_zone
+#=> "us-east-1b"
 
-AwsInfo.
-#=>
+AwsInfo.instance_id
+#=> "i-00000000"
 
-AwsInfo.
-#=>
+AwsInfo.instance_type
+#=> "t2.micro"
 
-AwsInfo.
-#=>
+AwsInfo.version
+#=> "2015-1-21"
 
-AwsInfo.
-#=>
+AwsInfo.dev_pay_product_codes
+#=> nil
 
-AwsInfo.
-#=>
+AwsInfo.billing_products
+#=>  nil
 
-AwsInfo.
-#=>
+AwsInfo.account_id
+#=> "00000000000"
 
-AwsInfo.
-#=>
+AwsInfo.pending_time
+#=> "2015-09-04T19:03:47Z"
 
-AwsInfo.
-#=>
+AwsInfo.image_id
+#=> "ami-c8888888"
 
-AwsInfo.
-#=>
+AwsInfo.kernel_id
+#=> nil
+
+AwsInfo.ram_disk_id
+#=> nil
+
+AwsInfo.architecture
+#=> "x86_64"
+
+AwsInfo.tags
+#=> { 'my_tag' => 'my tag's value!'}
+
+# Access a single tag
+AwsInfo.tags['my_tag']
+#=> "my tag's value!"
 
 ```
 
-## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release` to create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
 ## Contributing
 
-1. Fork it ( https://github.com/[my-github-username]/aws_info/fork )
+1. Fork it ( https://github.com/thomas07vt/aws_info/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
