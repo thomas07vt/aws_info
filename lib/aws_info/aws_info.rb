@@ -83,7 +83,7 @@ module AwsInfo
       # You must have permissions to run aws ec2 describe-tags
       # Is there a better way to get this without relying on sysyem calls?
       # Aws sdk provides this, but do I want to rely on the aws-adk?
-      `aws ec2 describe-tags --region us-east-1 --filter "Name=resource-id,Values=#{instance_id}"`
+      `aws ec2 describe-tags --region #{region} --filter "Name=resource-id,Values=#{instance_id}"`
     end
 
     def load_meta_data
