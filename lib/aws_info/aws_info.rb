@@ -3,19 +3,24 @@ require 'json'
 require 'timeout'
 
 module AwsInfo
+  DEFAULT_REGION = 'us-east-1'
 
   class << self
 
     def tags
-      @@tags ||= load_tag_data
+      @tags ||= load_tag_data
     end
 
     def info
-      @@info ||= load_meta_data
+      if @info.nil? || @info == {}
+        @info = load_meta_data
+      else
+        @info
+      end
     end
 
     def region
-      info["region"]
+      info["region"] || DEFAULT_REGION
     end
 
     def ip
@@ -91,10 +96,13 @@ module AwsInfo
     end
 
     def query_instance_identity
-      Timeout::timeout(5) {
+      Timeout::timeout(1) {
         url = 'http://169.254.169.254/latest/dynamic/instance-identity/document'
         Net::HTTP.get(URI.parse(url))
       }
+    rescue => e
+      puts 'Could not load AwsInfo. Is 169.254.169.254 reachable?'
+      '{}'
     end
 
   end # End class methods

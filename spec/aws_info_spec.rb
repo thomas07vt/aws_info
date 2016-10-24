@@ -15,7 +15,7 @@ describe AwsInfo do
       expect(AwsInfo.info.class).to eq(Hash)
     end
 
-    it 'memoizes @@info' do
+    it 'memoizes @info' do
       AwsInfo.info # Set info if it hasn't been
       expect(AwsInfo).to receive(:load_info).exactly(0).times
       2.times { AwsInfo.info }
@@ -120,7 +120,7 @@ describe AwsInfo do
       expect(AwsInfo.tags['tag2']).to eq('second')
     end
 
-    it 'memoizes @@tags' do
+    it 'memoizes @tags' do
       AwsInfo.tags # Set info if it hasn't been
       expect(AwsInfo).to receive(:load_meta_data).exactly(0).times
       2.times { AwsInfo.tags }
