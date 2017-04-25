@@ -93,6 +93,9 @@ module AwsInfo
 
     def load_meta_data
       JSON.parse(query_instance_identity)
+    rescue => e
+      puts 'Could not load AwsInfo. Is 169.254.169.254 reachable?'
+      {}
     end
 
     def query_instance_identity
@@ -100,11 +103,6 @@ module AwsInfo
         url = 'http://169.254.169.254/latest/dynamic/instance-identity/document'
         Net::HTTP.get(URI.parse(url))
       }
-    rescue => e
-      puts 'Could not load AwsInfo. Is 169.254.169.254 reachable?'
-      '{}'
     end
-
   end # End class methods
-
 end
